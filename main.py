@@ -9,8 +9,11 @@ from torchvision.transforms import Compose, Resize, ToTensor
 from einops import rearrange, reduce, repeat
 from einops.layers.torch import Rearrange, Reduce
 from torchsummary import summary
+from emb_patches import PatchEmbedding
+from attention import MultiHeadAttention
+from transformerencoderblock import TransformerEncoderBlock
 
-from patches import PatchEmbedding
+
 img = Image.open('./cat.jpg')
 fig = plt.figure()
 plt.imshow(img)
@@ -22,5 +25,9 @@ x = x.unsqueeze(0)
 print("shape is {}".format(x.shape))
 # patch_size = 16
 # patches = rearrange(x, 'b c (h1 s1) (w s2) -> b (h w) (s1 s2 c)', s1=patch_size, s2=patch_size)
-
-print("patch shape is {}".format(PatchEmbedding()(x).shape))
+patches_embedded = PatchEmbedding()(x)
+print("patch embedding shape is {}".format(patches_embedded.shape))
+mha = MultiHeadAttention()(patches_embedded)
+print("mha shape is {}".format(mha.shape))
+teb = TransformerEncoderBlock()(patches_embedded)
+print("TEB shape is {}".format(teb.shape))

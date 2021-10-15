@@ -6,6 +6,9 @@ from einops import rearrange, reduce, repeat
 
 
 class PatchEmbedding(nn.Module):
+    """
+    This implements the Patch+Position Embedding ass input to the Encoder
+    """
     def __init__(self, in_channels: int = 3, patch_size: int = 16, emb_size: int = 768, img_size: int = 224):
         self.patch_size = patch_size
         super().__init__()
